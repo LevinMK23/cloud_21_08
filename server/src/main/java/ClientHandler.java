@@ -34,7 +34,10 @@ public class ClientHandler implements Runnable {
             try {
                 String message = is.readUTF();
                 System.out.println("message from " + name + ": " + message);
-                server.broadCastMessage(message);
+                if (message.startsWith("/c file start")){
+                    FileReadWrite.readRemote(message,is);
+                    message = "quit";
+                }
                 if (message.equals("quit")) {
                     server.kick(this);
                     os.close();

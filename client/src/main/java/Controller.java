@@ -24,7 +24,7 @@ public class Controller implements Initializable {
     private Socket socket;
     private static DataInputStream is;
     private static DataOutputStream os;
-    private String clientPath = "client/ClientStorage";
+    private String clientPath = "D:/develop/git/Java/Java3";
 
     public static void stop() {
         try {
@@ -46,12 +46,22 @@ public class Controller implements Initializable {
         text.clear();
     }
 
-    public void initialize(URL location, ResourceBundle resources) {
-        text.setOnAction(this::sendMessage);
-        File dir = new File(clientPath);
-        for (File file : dir.listFiles()) {
-            listView.getItems().add(file.getName() + "        |       " + file.length() + " bytes");
+    public void sendFile(ActionEvent actionEvent) {
+        String message = text.getText();
+        try(Socket socketForFile = new Socket("localhost", 8189); DataOutputStream outFile = new DataOutputStream(socketForFile.getOutputStream())){
+            FileReadWrite.sendRemote(message, outFile);
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        text.clear();
+    }
+    public void initialize(URL location, ResourceBundle resources) {
+ //       text.setOnAction(this::sendFile);
+        File dir = new File(clientPath);
+       /* for (File file : dir.listFiles()) {
+            listView.getItems().add(file.getName() + "        |       " + file.length() + " bytes");
+        }*/
         try {
             socket = new Socket("localhost", 8189);
             is = new DataInputStream(socket.getInputStream());

@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.UUID;
 
 public class FileReadWrite {
     // File
@@ -6,38 +7,38 @@ public class FileReadWrite {
     // OutputStream -> потоки данных
     // Reader, Writer
     // буферизация
+    static final int CHUNK_SIZE = 8192;
 
-    public static void copyFromBuffered(File src, File dst) throws IOException {
-        System.out.println("copy " + src.length() + " bytes");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(new BufferedInputStream(new FileInputStream(src))));
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new BufferedOutputStream(new FileOutputStream(dst))));
-        int x;
-        while ((x = reader.read()) != -1) {
-            writer.write(x);
-        }
-        writer.close();
-        reader.close();
+    public static String genToken(){
+        return UUID.randomUUID().toString();
     }
 
-    public static void copyFrom(File src, File dst) throws IOException {
-        System.out.println("copy " + src.length() + " bytes");
+
+    public static void sendRemote(String sourceFilePath, DataOutputStream os) throws  IOException{
+        File src  = new File(sourceFilePath);
         InputStream is = new FileInputStream(src);
-        OutputStream os = new FileOutputStream(dst);
-        byte [] buffer = new byte[5]; // 8Kb
-        int count = 0;
+        String token = genToken();
+        os.writeUTF("/c file start " + token);
+        byte [] buffer = new byte[CHUNK_SIZE]; // 8Kb
+        int count;
         while ((count = is.read(buffer)) != -1) {
             os.write(buffer, 0, count);
-            System.out.println("read " + count + " bytes");
+            os.flush();
         }
-        os.close();
         is.close();
     }
 
-
-    public static void main(String[] args) throws IOException {
-        File file = new File("common/src/main/resources/input.txt");
-        File to = new File("common/src/main/resources/input1.txt");
+    public static void readRemote(String message, DataInputStream is) throws IOException {
+        String[]  s = message.split(" ");
+        File to = new File("common/src/main/java/"+s[3]+".txt");
         if (!to.exists()) to.createNewFile();
-        copyFrom(file, to);
+        OutputStream os = new FileOutputStream(to);
+        byte [] buffer = new byte[CHUNK_SIZE]; // 8Kb
+        int count;
+        while ((count = is.read(buffer)) != -1) {
+            os.write(buffer, 0, count);
+            os.flush();
+        }
+        os.close();
     }
 }

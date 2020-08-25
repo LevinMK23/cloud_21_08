@@ -28,11 +28,11 @@ public class IOServer {
         }
     }
 
-    public void broadCastMessage(String message) throws IOException {
-        for (ClientHandler client : queue) {
-            client.sendMessage(message);
-        }
-    }
+//    public void broadCastMessage(String message) throws IOException {
+//        for (ClientHandler client : queue) {
+//            client.sendMessage(message);
+//        }
+//    }
 
     public void kick(ClientHandler clientHandler) {
         queue.remove(clientHandler);

@@ -6,11 +6,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -38,24 +36,43 @@ public class Controller implements Initializable {
     public void sendMessage(ActionEvent actionEvent) {
         String message = text.getText();
         try {
-            os.writeUTF(message);
-            os.flush();
+            if (message.startsWith("/upload")) {
+                os.writeUTF(message);
+                String[] arr = message.split("[|]");
+                File src = new File("client/ClientStorage/"+arr[1].trim());
+                InputStream isFile = new FileInputStream(src);
+                byte[] buffer = new byte[8192]; // 8Kb
+                int count = 0;
+                while ((count = isFile.read(buffer)) != -1) {
+                    os.write(buffer, 0, count);
+                    os.flush();
+                }
+                isFile.close();
+            }else {
+                os.writeUTF(message);
+                os.flush();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         text.clear();
     }
 
-    public void initialize(URL location, ResourceBundle resources) {
+public void initialize(URL location, ResourceBundle resources) {
+
         text.setOnAction(this::sendMessage);
         File dir = new File(clientPath);
         for (File file : dir.listFiles()) {
             listView.getItems().add(file.getName() + "        |       " + file.length() + " bytes");
         }
+
         try {
             socket = new Socket("localhost", 8189);
             is = new DataInputStream(socket.getInputStream());
             os = new DataOutputStream(socket.getOutputStream());
+
+
+
 //            new Task<String>() {
 //                @Override
 //                protected String call() throws Exception {
@@ -71,6 +88,8 @@ public class Controller implements Initializable {
 //                    }
 //                }
 //            };
+
+
             new Thread(() -> {
                 while (true) {
                     try {
@@ -87,5 +106,12 @@ public class Controller implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+   }
+
+    public void onMousePresset(MouseEvent mouseEvent) {
+
+        String selectedItem = listView.getSelectionModel().getSelectedItem();
+        String[] arr = selectedItem.split("[|]");
+        text.setText("/upload | "+ arr[0]);
     }
 }

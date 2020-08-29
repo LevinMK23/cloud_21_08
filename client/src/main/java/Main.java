@@ -7,15 +7,19 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import java.net.URL;
+
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Chat");
-        primaryStage.setScene(new Scene(root));
-        primaryStage.show();
-        primaryStage.setOnCloseRequest(event -> {
+
+        URL foo = getClass().getResource("sample.fxml");
+          Parent root = FXMLLoader.load(foo);
+          primaryStage.setTitle("Chat");
+          primaryStage.setScene(new Scene(root));
+          primaryStage.show();
+          primaryStage.setOnCloseRequest(event -> {
             Controller.stop();
             Platform.exit();
         });

@@ -8,8 +8,9 @@
         <outputRelativeToContentRoot value="true" />
         <module name="server" />
         <module name="client" />
+        <module name="nio-client" />
         <module name="common" />
-        <module name="nio" />
+        <module name="netty" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

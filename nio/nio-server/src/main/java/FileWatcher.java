@@ -21,27 +21,21 @@ public class FileWatcher {
                 StandardWatchEventKinds.ENTRY_MODIFY);
 
         while (true) {
-            System.out.println("Waiting for a watch event");
-            // блокирующая операция ждем ключ события
+            System.out.println("Ждем события");
+            // блокирующая операция ждем ключ событий
             WatchKey watchKey = watchService.take();
-
             if (watchKey.isValid()) {
-
                 for (WatchEvent<?> event : watchKey.pollEvents()) {
                     System.out.println("Тип события: " + event.kind());
                     System.out.println("Ресурс который изменился: " + event.context());
                     System.out.println("Количество событий: " + event.count());
                 }
-
-                boolean valid = watchKey.reset();
-                if (!valid) {
-                    // The watchKey is not longer registered
-                }
+                watchKey.reset();
             }
         }
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
-
+        new FileWatcher().registerWatcher(Paths.get("dir"));
     }
 }

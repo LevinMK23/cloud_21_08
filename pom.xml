@@ -14,6 +14,7 @@
         <module>common</module>
         <module>nio</module>
         <module>nio-server</module>
+        <module>netty</module>
     </modules>
 
 

@@ -1,14 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.sun.javafx.util.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/10.0.2-internal"
-          xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
-   <AnchorPane prefHeight="533.0" prefWidth="376.0">
-      <ListView fx:id="listView" layoutX="14.0" layoutY="15.0" prefHeight="468.0" prefWidth="348.0" />
-      <TextField fx:id="text" layoutX="14.0" layoutY="483.0" prefHeight="38.0" prefWidth="294.0" promptText="Введите текст" />
-      <Button fx:id="send" onAction="#sendMessage" layoutX="308.0" layoutY="483.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="54.0" text="SEND" />
-   </AnchorPane>
-</GridPane>
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+         <children>
+            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label alignment="TOP_CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="16.0" prefWidth="313.0" text="Сервер" textAlignment="CENTER" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <ListView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+               </children>
+            </VBox>
+            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="16.0" prefWidth="113.0" text="Клиент" textAlignment="CENTER" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <ListView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <TextArea editable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="150.0" prefWidth="200.0" VBox.vgrow="NEVER" />
+      <HBox VBox.vgrow="NEVER">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.0" text="&gt;" textAlignment="CENTER" HBox.hgrow="NEVER" />
+            <TextField maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="397.0" HBox.hgrow="ALWAYS" />
+            <Button mnemonicParsing="false" text="-&gt;" HBox.hgrow="NEVER">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font></Button>
+         </children>
+      </HBox>
+   </children>
+</VBox>

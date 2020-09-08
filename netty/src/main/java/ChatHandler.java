@@ -2,6 +2,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.SocketChannel;
 
+import java.nio.file.*;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class ChatHandler extends SimpleChannelInboundHandler<String> {
@@ -30,7 +31,14 @@ public class ChatHandler extends SimpleChannelInboundHandler<String> {
         // impl
         System.out.printf("Received message from %s: %s\n", userName, s);
         callback.call(s);
-        channels.stream()
+        String [] data = s.split(" ");
+        Path path = Paths.get("netty/" + data[0]);
+        if (!Files.exists(path)) {
+            Files.createFile(path);
+        }
+        Files.write(Paths.get("netty/" + data[0]), data[1].getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
+        System.out.println("File with name: " + data[0] + " created!");
+        channels
                 //.filter(channel -> !channel.equals(ctx.channel()))
                 .forEach(channel -> channel.writeAndFlush(String.format("[%s]: %s", userName, s)));
     }
